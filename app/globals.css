@@ -1,0 +1,212 @@
+@import "tailwindcss";
+
+/* -------------------------------------------------------------------------
+   Design-Tokens (Tailwind v4)
+
+   Farbwelt: Eisberg. Über Wasser kaltes Weiss und Gletscherblau, unter Wasser
+   Tiefsee-Navy. `signal` ist die einzige Akzentfarbe – sie markiert alles
+   Klickbare und die Hervorhebungen in der Scroll-Story.
+   ------------------------------------------------------------------------- */
+@theme {
+  --color-abyss: #02060f;
+  --color-deep: #05121f;
+  --color-ocean: #0a2740;
+  --color-shelf: #12455f;
+  --color-steel: #8aa2b8;
+  --color-ice: #9fdcf5;
+  --color-glacier: #e6f6ff;
+  --color-signal: #22d3ee;
+  --color-signal-dim: #0e7490;
+  --color-forge: #ff8a3d;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), var(--font-inter), ui-sans-serif, sans-serif;
+
+  --shadow-glow: 0 0 40px -10px color-mix(in oklab, var(--color-signal) 60%, transparent);
+  --shadow-panel: 0 24px 60px -30px rgb(0 0 0 / 0.9);
+
+  --animate-pulse-ring: pulse-ring 2.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
+  --animate-marquee-vertical: marquee-vertical var(--marquee-duration, 40s) linear infinite;
+  --animate-shimmer: shimmer 2.5s linear infinite;
+  --animate-border-beam: border-beam calc(var(--beam-duration, 8s)) linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-caustics: caustics 18s ease-in-out infinite alternate;
+
+  @keyframes pulse-ring {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    50% {
+      transform: scale(1.45);
+      opacity: 0;
+    }
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--marquee-gap, 1rem)));
+    }
+  }
+
+  @keyframes marquee-vertical {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(-100% - var(--marquee-gap, 1rem)));
+    }
+  }
+
+  @keyframes shimmer {
+    from {
+      background-position: 0% 50%;
+    }
+    to {
+      background-position: 200% 50%;
+    }
+  }
+
+  @keyframes border-beam {
+    to {
+      offset-distance: 100%;
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+
+  @keyframes caustics {
+    0% {
+      transform: translate3d(-2%, 0, 0) scale(1.05);
+      opacity: 0.25;
+    }
+    100% {
+      transform: translate3d(2%, -3%, 0) scale(1.15);
+      opacity: 0.45;
+    }
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Basis
+   ------------------------------------------------------------------------- */
+@layer base {
+  html {
+    /* Lenis übernimmt das Smooth-Scrolling; natives smooth-scroll würde
+       dagegen arbeiten. Anker-Sprünge laufen über ScrollToPlugin. */
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-abyss);
+    color: var(--color-glacier);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-signal) 35%, transparent);
+    color: var(--color-glacier);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Lenis: verhindert Scroll-Sprünge während der Interpolation. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Utilities
+   ------------------------------------------------------------------------- */
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 80rem;
+  padding-inline: 1.25rem;
+
+  @media (width >= 48rem) {
+    padding-inline: 2rem;
+  }
+}
+
+/** Verlaufstext in Gletscher-Blau – für Headlines. */
+@utility text-glacier-gradient {
+  background-image: linear-gradient(
+    180deg,
+    var(--color-glacier) 0%,
+    var(--color-ice) 55%,
+    color-mix(in oklab, var(--color-signal) 70%, var(--color-ocean)) 100%
+  );
+  background-clip: text;
+  color: transparent;
+}
+
+/** Glasige Panel-Fläche über dem Canvas-Hintergrund. */
+@utility panel-glass {
+  background-color: color-mix(in oklab, var(--color-deep) 55%, transparent);
+  backdrop-filter: blur(14px) saturate(1.2);
+  border: 1px solid color-mix(in oklab, var(--color-ice) 14%, transparent);
+}
+
+/** Feines technisches Raster – Blaupausen-Anmutung. */
+@utility bg-blueprint {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--color-ice) 7%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-ice) 7%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 64px 64px;
+}
+
+/* -------------------------------------------------------------------------
+   Reduzierte Bewegung
+   Dekorative Endlos-Animationen werden abgeschaltet; die Scroll-Story bleibt
+   lesbar, weil ihre Texte per JS auf volle Deckkraft gesetzt werden.
+   ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
