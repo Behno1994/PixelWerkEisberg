@@ -1,30 +1,30 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Pixelify_Sans } from "next/font/google";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SmoothScrollProvider } from "@/components/layout/smooth-scroll-provider";
 import { ScrollIndicator } from "@/components/layout/scroll-indicator";
-import { ScrollVideoCanvas } from "@/components/canvas/scroll-video-canvas";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
-const inter = Inter({
+/**
+ * Pixelschrift – ausschliesslich für die Wortmarke „PIXEL WERK".
+ *
+ * Fliesstext und Überschriften laufen bewusst über die Systemschrift
+ * (siehe `--font-sans` in `globals.css`): Das ist die saubere, schweizerisch
+ * anmutende Basis, gegen die sich die Pixel-Wortmarke absetzt – und es spart
+ * einen Fontdownload im kritischen Pfad.
+ */
+const pixelify = Pixelify_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-/** Technische Display-Schrift für Überschriften und Wortmarke. */
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-pixelify",
   display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} – ${siteConfig.tagline}`,
+    default: "Pixel Werk | Modernes Webdesign für die Industrie",
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#02060f",
+  themeColor: "#0a0f1d",
   colorScheme: "dark",
 };
 
@@ -61,11 +61,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="de" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    <html lang="de" className={pixelify.variable}>
       <body className="min-h-screen antialiased">
-        {/* Scroll-Hintergrund: liegt fixiert hinter dem gesamten Seiteninhalt. */}
-        <ScrollVideoCanvas />
-
         <SmoothScrollProvider>
           <a
             href="#inhalt"

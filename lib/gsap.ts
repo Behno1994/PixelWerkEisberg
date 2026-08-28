@@ -26,4 +26,16 @@ if (typeof window !== "undefined" && !registered) {
   ScrollTrigger.config({ ignoreMobileResize: true });
 }
 
+/**
+ * `true`, wenn der Nutzer reduzierte Bewegung angefordert hat.
+ *
+ * GSAP animiert Inline-Styles; die CSS-Regel in `globals.css` greift dort
+ * nicht. Tweens müssen die Einstellung deshalb selbst berücksichtigen –
+ * in der Regel, indem sie mit Dauer 0 direkt in den Endzustand springen.
+ */
+export function prefersReducedMotion() {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
 export { gsap, ScrollTrigger, ScrollToPlugin };

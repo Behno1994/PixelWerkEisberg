@@ -83,7 +83,7 @@ export function Leistungen() {
                     </span>
 
                     <div className="flex flex-col gap-2">
-                      <h3 className="font-display text-lg font-semibold tracking-tight text-glacier">
+                      <h3 className="text-lg font-semibold tracking-tight text-glacier">
                         {service.title}
                       </h3>
                       <p className="text-pretty text-sm leading-relaxed text-steel">

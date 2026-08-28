@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { useInView, useMotionValue, useSpring } from "motion/react";
-import { cn } from "@/lib/utils";
-import { formatNumber } from "@/lib/utils";
+import { useRef } from "react";
+import { gsap, prefersReducedMotion } from "@/lib/gsap";
+import { useGsapScroll } from "@/hooks/use-gsap-scroll";
+import { cn, formatNumber } from "@/lib/utils";
 
 type NumberTickerProps = {
   value: number;
-  /** Startwert; bei `direction: "down"` wird von `value` heruntergezählt. */
+  /** `down` zählt von `value` auf 0 herunter. */
   direction?: "up" | "down";
+  /** Verzögerung in Sekunden. */
   delay?: number;
   decimalPlaces?: number;
   className?: string;
@@ -27,38 +28,44 @@ export function NumberTicker({
   decimalPlaces = 0,
   className,
 }: NumberTickerProps) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const motionValue = useMotionValue(direction === "down" ? value : 0);
-  const spring = useSpring(motionValue, { damping: 60, stiffness: 90 });
-  const inView = useInView(ref, { once: true, margin: "0px 0px -80px 0px" });
+  const root = useRef<HTMLSpanElement>(null);
 
-  useEffect(() => {
-    if (!inView) return;
-    const timer = window.setTimeout(
-      () => motionValue.set(direction === "down" ? 0 : value),
-      delay * 1000,
-    );
-    return () => window.clearTimeout(timer);
-  }, [inView, value, direction, delay, motionValue]);
+  useGsapScroll(
+    (_ctx, scope) => {
+      const target = direction === "down" ? 0 : value;
 
-  useEffect(
-    () =>
-      spring.on("change", (latest: number) => {
-        if (!ref.current) return;
-        ref.current.textContent =
+      // Ohne Bewegung nicht hochzählen, sondern direkt den Endwert setzen.
+      if (prefersReducedMotion()) {
+        scope.textContent =
           decimalPlaces > 0
-            ? latest.toFixed(decimalPlaces).replace(".", ",")
-            : formatNumber(Math.round(latest));
-      }),
-    [spring, decimalPlaces],
+            ? target.toFixed(decimalPlaces).replace(".", ",")
+            : formatNumber(target);
+        return;
+      }
+
+      const counter = { current: direction === "down" ? value : 0 };
+
+      gsap.to(counter, {
+        current: target,
+        duration: 2,
+        delay,
+        ease: "power2.out",
+        scrollTrigger: { trigger: scope, start: "top 92%" },
+        onUpdate: () => {
+          scope.textContent =
+            decimalPlaces > 0
+              ? counter.current.toFixed(decimalPlaces).replace(".", ",")
+              : formatNumber(Math.round(counter.current));
+        },
+      });
+    },
+    root,
+    [value, direction, delay, decimalPlaces],
   );
 
   return (
-    <span
-      ref={ref}
-      className={cn("inline-block tabular-nums tracking-tight", className)}
-    >
-      {/* Serverseitiger Startwert – verhindert Layout-Sprung vor der Hydration. */}
+    <span ref={root} className={cn("inline-block tabular-nums tracking-tight", className)}>
+      {/* Serverseitiger Startwert – verhindert einen Layout-Sprung vor der Hydration. */}
       {direction === "down" ? formatNumber(value) : 0}
     </span>
   );

@@ -12,7 +12,7 @@ export function Footer() {
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-3">
             <DiamondLogo className="h-8 w-8" idPrefix="footer" />
-            <span className="font-display text-lg font-semibold tracking-tight text-glacier">
+            <span className="text-lg font-semibold tracking-tight text-glacier">
               Pixel<span className="text-signal">Werk</span>
             </span>
           </div>

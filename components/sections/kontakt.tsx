@@ -96,7 +96,7 @@ export function Kontakt() {
                 <span className="grid size-14 place-items-center rounded-full bg-signal/15 text-signal">
                   <Check className="size-7" />
                 </span>
-                <h3 className="font-display text-2xl font-semibold text-glacier">
+                <h3 className="text-2xl font-semibold text-glacier">
                   Anfrage ist angekommen.
                 </h3>
                 <p className="max-w-sm text-sm text-steel">

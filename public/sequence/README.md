@@ -1,14 +1,14 @@
-# Scroll-Sequenz
+# Scroll-Video
 
-Hier liegen die Assets für den seitenweiten Scroll-Hintergrund.
+Hier liegt das Video für die Kino-Szene.
 
-- `frames/` – Bildsequenz (`eisberg_0001.webp` …). Der Ordner ist bewusst in
-  `.gitignore` ausgenommen: Mehrere hundert Einzelbilder gehören nicht ins
-  Repository, sondern auf ein CDN oder in den Deployment-Upload.
-- `eisberg.mp4` / `eisberg-poster.jpg` – Alternative als einzelne Videodatei.
+- `eisberg.mp4` – wird in `lib/scroll-media.ts` aktiviert.
 
-Aktiviert wird die Quelle in `lib/scroll-media.ts`. Solange dort
-`{ kind: "procedural" }` steht, wird die Szene live gezeichnet und es werden
-keine Assets benötigt.
+Solange dort `null` steht, zeichnet der prozedurale Renderer die Szene live und
+es wird kein Asset benötigt.
 
-Details zu Export-Einstellungen: siehe README im Projektwurzelverzeichnis.
+Das Material sollte hell beginnen und zur Tiefe hin abdunkeln: Die Textstufen
+wechseln bei p ≈ 0.55 von dunkler auf weisse Schrift.
+
+Encoding-Einstellungen und Details zum Scrubbing: siehe README im
+Projektwurzelverzeichnis.

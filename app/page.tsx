@@ -1,5 +1,5 @@
-import { Hero } from "@/components/sections/hero";
-import { IcebergStory } from "@/components/sections/iceberg-story";
+import { CinematicScene } from "@/components/canvas/cinematic-scene";
+import { Maschinenbau } from "@/components/sections/maschinenbau";
 import { Leistungen } from "@/components/sections/leistungen";
 import { CtaBand } from "@/components/sections/cta-band";
 import { UeberUns } from "@/components/sections/ueber-uns";
@@ -9,15 +9,15 @@ import { Kontakt } from "@/components/sections/kontakt";
 /**
  * Startseite.
  *
- * Die Reihenfolge ist zugleich die Dramaturgie der Kamerafahrt: Hero an der
- * Wasseroberfläche, danach der Abstieg entlang des Eisbergs, und ab
- * „Leistungen“ die inhaltlichen Sektionen vor abgedunkeltem Hintergrund.
+ * Zuerst die durchgehende Kino-Szene: 500vh Scrollstrecke, in der das Bild von
+ * der hellen Wasseroberfläche in die dunkle Tiefe fährt und die drei Textstufen
+ * nacheinander erscheinen. Danach folgen die inhaltlichen Sektionen.
  */
 export default function Home() {
   return (
     <>
-      <Hero />
-      <IcebergStory />
+      <CinematicScene />
+      <Maschinenbau />
       <Leistungen />
       <CtaBand />
       <UeberUns />

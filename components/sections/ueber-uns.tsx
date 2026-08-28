@@ -27,7 +27,7 @@ export function UeberUns() {
                 className="panel-glass flex flex-col gap-1 rounded-3xl p-6"
               >
                 <dt className="sr-only">{stat.label}</dt>
-                <dd className="font-display text-4xl font-semibold tracking-tight text-glacier">
+                <dd className="text-4xl font-semibold tracking-tight text-glacier">
                   <NumberTicker value={stat.value} />
                   <span className="text-signal">{stat.suffix}</span>
                 </dd>

@@ -19,7 +19,7 @@ export function CtaBand() {
           />
 
           <div className="relative flex flex-col items-center gap-6">
-            <h2 className="font-display text-balance text-3xl font-semibold leading-tight tracking-tight text-glacier sm:text-5xl">
+            <h2 className="text-balance text-3xl font-semibold leading-tight tracking-tight text-glacier sm:text-5xl">
               Bereit, den ganzen Eisberg zu heben?
             </h2>
             <p className="max-w-xl text-pretty text-base leading-relaxed text-steel sm:text-lg">

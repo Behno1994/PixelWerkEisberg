@@ -35,7 +35,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-# generated scroll frames (large binary sequences – keep out of git,
-# but keep the directory itself so the configured path exists)
-/public/sequence/frames/*
-!/public/sequence/frames/.gitkeep
+# scroll video (large binary – keep out of git, deploy via CDN or asset upload)
+/public/sequence/*.mp4
+/public/sequence/*.webm

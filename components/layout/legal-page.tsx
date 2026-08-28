@@ -16,7 +16,7 @@ export function LegalPage({ title, updatedAt, children, className }: LegalPagePr
   return (
     <article className="relative z-10 bg-abyss/90 py-32 backdrop-blur-xl">
       <div className={cn("container-page max-w-3xl", className)}>
-        <h1 className="font-display text-4xl font-semibold tracking-tight text-glacier sm:text-5xl">
+        <h1 className="text-4xl font-semibold tracking-tight text-glacier sm:text-5xl">
           {title}
         </h1>
         {updatedAt && (
@@ -26,7 +26,7 @@ export function LegalPage({ title, updatedAt, children, className }: LegalPagePr
         <div
           className={cn(
             "mt-10 flex flex-col gap-6 text-base leading-relaxed text-steel",
-            "[&_h2]:mt-6 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-glacier",
+            "[&_h2]:mt-6 [&_h2]:[&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-glacier",
             "[&_a]:text-signal [&_a]:underline [&_a]:underline-offset-4",
             "[&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2",
           )}

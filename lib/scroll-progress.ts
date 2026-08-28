@@ -1,32 +1,41 @@
 /**
- * Winziger Pub/Sub-Speicher für den Scroll-Fortschritt der Seite (0–1).
+ * Winzige Pub/Sub-Speicher für Scroll-Fortschritte (jeweils 0–1).
  *
- * Warum kein React-Context/State: Der Wert ändert sich bei jedem Scroll-Frame.
- * Ein State-Update pro Frame würde den gesamten Teilbaum neu rendern. Hier
- * schreibt genau ein Producer (`ScrollBackdrop`) und mehrere Consumer lesen den
- * Wert imperativ – ohne React-Render.
+ * Warum kein React-Context/State: Die Werte ändern sich bei jedem Frame. Ein
+ * State-Update pro Frame würde den gesamten Teilbaum neu rendern. Hier
+ * schreibt genau ein Producer und mehrere Consumer lesen imperativ – ohne
+ * React-Render.
  */
 type Listener = (progress: number) => void;
 
-const listeners = new Set<Listener>();
-let current = 0;
+function createProgressStore() {
+  const listeners = new Set<Listener>();
+  let current = 0;
 
-export const scrollProgress = {
-  get value() {
-    return current;
-  },
+  return {
+    get value() {
+      return current;
+    },
 
-  set(progress: number) {
-    current = progress;
-    for (const listener of listeners) listener(progress);
-  },
+    set(progress: number) {
+      if (progress === current) return;
+      current = progress;
+      for (const listener of listeners) listener(progress);
+    },
 
-  /** Registriert einen Listener und ruft ihn sofort mit dem aktuellen Wert auf. */
-  subscribe(listener: Listener) {
-    listeners.add(listener);
-    listener(current);
-    return () => {
-      listeners.delete(listener);
-    };
-  },
-};
+    /** Registriert einen Listener und ruft ihn sofort mit dem aktuellen Wert auf. */
+    subscribe(listener: Listener) {
+      listeners.add(listener);
+      listener(current);
+      return () => {
+        listeners.delete(listener);
+      };
+    },
+  };
+}
+
+/**
+ * Fortschritt innerhalb der Kino-Szene (der 500vh-Scrolltrack).
+ * Steuert Videoposition, die drei Textstufen und den Farbwechsel der Navigation.
+ */
+export const sceneProgress = createProgressStore();

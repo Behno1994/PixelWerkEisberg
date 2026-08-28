@@ -44,13 +44,13 @@ export function Referenzen() {
               </span>
 
               <div className="flex flex-col gap-1">
-                <h3 className="font-display text-base font-semibold tracking-tight text-glacier">
+                <h3 className="text-base font-semibold tracking-tight text-glacier">
                   {reference.client}
                 </h3>
                 <p className="text-sm text-steel">{reference.project}</p>
               </div>
 
-              <p className="mt-auto font-display text-xl font-semibold tracking-tight text-signal">
+              <p className="mt-auto text-xl font-semibold tracking-tight text-signal">
                 {reference.result}
               </p>
             </article>

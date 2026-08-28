@@ -36,7 +36,7 @@ export function SectionHeading({
       )}
 
       <BlurFade delay={0.08}>
-        <h2 className="font-display text-balance text-3xl font-semibold leading-[1.1] tracking-tight text-glacier sm:text-4xl lg:text-5xl">
+        <h2 className="text-balance text-3xl font-semibold leading-[1.1] tracking-tight text-glacier sm:text-4xl lg:text-5xl">
           {title}
         </h2>
       </BlurFade>

@@ -24,8 +24,8 @@ export const siteConfig = {
 /** Hauptnavigation. `href` sind Section-Anker auf der Startseite. */
 export const navLinks = [
   { label: "Leistungen", href: "#leistungen" },
-  { label: "Ansatz", href: "#eisberg" },
-  { label: "Referenzen", href: "#referenzen" },
+  { label: "Portfolio", href: "#referenzen" },
+  { label: "Maschinenbau & Industrie", href: "#maschinenbau" },
   { label: "Über uns", href: "#ueber-uns" },
 ] as const;
 

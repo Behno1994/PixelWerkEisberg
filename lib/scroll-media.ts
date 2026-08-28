@@ -1,53 +1,36 @@
 /**
- * Quelle des seitenweiten Scroll-Hintergrunds.
+ * Quelle des Videohintergrunds der Kino-Szene.
  *
- * Drei Betriebsarten – die Scroll-Mechanik ist identisch, nur das Zeichnen
+ * Zwei Betriebsarten – die Scroll-Mechanik ist identisch, nur das Zeichnen
  * unterscheidet sich:
  *
- *  - `procedural`  Kein Asset nötig. Die Eisberg-Szene wird live auf das Canvas
- *                  gezeichnet. Das ist der aktuelle Stand, damit die Seite ohne
- *                  fertiges Video vollständig funktioniert.
- *  - `frames`      Bildsequenz (z. B. aus Blender/AE exportiert). Butterweiches
- *                  Scrubbing, weil kein Video-Seek nötig ist – dafür grösserer
- *                  Download. Empfohlen: 120–240 WebP-Frames à ~1600 px Breite.
- *  - `video`       Eine einzelne Videodatei, deren `currentTime` an den Scroll
- *                  gekoppelt wird. Kleinster Download, aber Seek-Verhalten ist
- *                  je nach Browser/Codec ruckeliger. Video ohne B-Frames und
- *                  mit kurzem Keyframe-Intervall (z. B. `-g 1`) exportieren.
+ *  - **Kein Video** (`null`, aktueller Stand): Die Eisberg-Szene wird live auf
+ *    das Canvas gezeichnet. Die Seite funktioniert dadurch vollständig, bevor
+ *    das eigentliche Videomaterial vorliegt.
+ *  - **Video gesetzt**: `hooks/use-video-scrub.ts` demuxt die Datei mit MP4Box,
+ *    dekodiert sie über WebCodecs und zeichnet die Frames aufs Canvas. Fehlt
+ *    WebCodecs oder scheitert das Demuxen, wird auf `currentTime`-Seeking
+ *    zurückgefallen und das `<video>`-Element scheint durch.
  *
- * Zum Umstellen genügt es, `scrollMedia` auf eine andere Variante zu setzen.
+ * Für sauberes Scrubbing ohne B-Frames und mit kurzem Keyframe-Intervall
+ * enkodieren:
+ *
+ *   ffmpeg -i quelle.mov -an -c:v libx264 -crf 22 -g 1 -bf 0 \
+ *     -pix_fmt yuv420p -movflags +faststart public/sequence/eisberg.mp4
+ *
+ * Wichtig für die Bildwirkung: Das Material sollte hell („high key") beginnen
+ * und zur Tiefe hin abdunkeln – die Textstufen wechseln bei p ≈ 0.55 von
+ * dunkler auf helle Schrift.
  */
-export type ScrollMediaSource =
-  | { kind: "procedural" }
-  | {
-      kind: "frames";
-      /** Anzahl der Einzelbilder. */
-      count: number;
-      /** Baut den Pfad zum Frame-Index (0-basiert). */
-      src: (index: number) => string;
-    }
-  | {
-      kind: "video";
-      src: string;
-      /** Standbild für den ersten Frame (verhindert schwarzen Blitz). */
-      poster?: string;
-    };
+export type SceneVideo = {
+  src: string;
+};
 
-/** Aktive Quelle. */
-export const scrollMedia: ScrollMediaSource = { kind: "procedural" };
+/** Aktive Quelle. `null` aktiviert die prozedurale Szene. */
+export const sceneVideo: SceneVideo | null = null;
 
 /**
- * Beispielkonfigurationen – eine davon oben einsetzen, sobald Assets vorliegen:
+ * Beispielkonfiguration – einsetzen, sobald das Video vorliegt:
  *
- * export const scrollMedia: ScrollMediaSource = {
- *   kind: "frames",
- *   count: 180,
- *   src: (i) => `/sequence/frames/eisberg_${String(i + 1).padStart(4, "0")}.webp`,
- * };
- *
- * export const scrollMedia: ScrollMediaSource = {
- *   kind: "video",
- *   src: "/sequence/eisberg.mp4",
- *   poster: "/sequence/eisberg-poster.jpg",
- * };
+ * export const sceneVideo: SceneVideo | null = { src: "/sequence/eisberg.mp4" };
  */
